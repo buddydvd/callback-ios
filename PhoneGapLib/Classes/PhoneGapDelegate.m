@@ -106,20 +106,20 @@
 
 + (NSString*) resolveImageResource:(NSString*)resource
 {
-    NSString* systemVersion = [[UIDevice currentDevice] systemVersion];
-    BOOL isLessThaniOS4 = ([systemVersion compare:@"4.0" options:NSNumericSearch] == NSOrderedAscending);
-    
-    // the iPad image (nor retina) differentiation code was not in 3.x, and we have to explicitly set the path
-    if (isLessThaniOS4)
-    {
-        if ([[self class] isIPad]) {
-            return [NSString stringWithFormat:@"%@~ipad.png", resource];
-        } else {
+//    NSString* systemVersion = [[UIDevice currentDevice] systemVersion];
+//    BOOL isLessThaniOS4 = ([systemVersion compare:@"4.0" options:NSNumericSearch] == NSOrderedAscending);
+//
+//    // the iPad image (nor retina) differentiation code was not in 3.x, and we have to explicitly set the path
+//    if (isLessThaniOS4)
+//    {
+//        if ([[self class] isIPad]) {
+//            return [NSString stringWithFormat:@"%@~ipad.png", resource];
+//        } else {
             return [NSString stringWithFormat:@"%@.png", resource];
-        }
-    }
-    
-    return resource;
+//        }
+//    }
+//
+//    return resource;
 }
 
 
