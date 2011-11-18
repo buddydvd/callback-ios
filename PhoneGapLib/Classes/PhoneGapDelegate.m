@@ -258,37 +258,34 @@ static NSString *gapVersion;
         if (!UIDeviceOrientationIsValidInterfaceOrientation(deviceOrientation)) {
             deviceOrientation = (UIDeviceOrientation)statusBarOrientation;
         }
-        
-        switch (deviceOrientation) 
-        {
-            case UIDeviceOrientationLandscapeLeft: // this is where the home button is on the right (yeah, I know, confusing)
-            {
-                orientedLaunchImageFile = [NSString stringWithFormat:@"%@-Landscape", launchImageFile];
+
+        NSFileManager *manager = [NSFileManager defaultManager];
+
+        NSString *landscape = [NSString stringWithFormat:@"%@-Landscape", launchImageFile];
+        NSString *portrait = [NSString stringWithFormat:@"%@-Portrait", launchImageFile];
+
+        NSString *landscapePath = [[NSBundle mainBundle] pathForResource:landscape ofType:@"png"];
+        NSString *portraitPath = [[NSBundle mainBundle] pathForResource:portrait ofType:@"png"];
+
+        if (UIDeviceOrientationIsLandscape(deviceOrientation) && [manager fileExistsAtPath:landscapePath]) {
+            orientedLaunchImageFile = [[self class] resolveImageResource:landscape];
+            if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
                 startupImageTransform = CGAffineTransformMakeRotation(degreesToRadian(90));
-            }
-                break;
-            case UIDeviceOrientationLandscapeRight: // this is where the home button is on the left (yeah, I know, confusing)
-            {
-                orientedLaunchImageFile = [NSString stringWithFormat:@"%@-Landscape", launchImageFile];
+            else
                 startupImageTransform = CGAffineTransformMakeRotation(degreesToRadian(-90));
-            } 
-                break;
-            case UIDeviceOrientationPortraitUpsideDown:
-            {
-                orientedLaunchImageFile = [NSString stringWithFormat:@"%@-Portrait", launchImageFile];
+        } else {
+            if ([manager fileExistsAtPath:portraitPath])
+                orientedLaunchImageFile = [[self class] resolveImageResource:portrait];
+            else
+                orientedLaunchImageFile = [[self class] resolveImageResource:launchImageFile];
+
+            if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
                 startupImageTransform = CGAffineTransformMakeRotation(degreesToRadian(180));
-            } 
-                break;
-            case UIDeviceOrientationPortrait:
-            default:
-            {
-                orientedLaunchImageFile = [NSString stringWithFormat:@"%@-Portrait", launchImageFile];
+            else
                 startupImageTransform = CGAffineTransformIdentity;
-            }
-                break;
         }
-        
-        launchImage = [UIImage imageNamed:[[self class] resolveImageResource:orientedLaunchImageFile]];
+
+        launchImage = [UIImage imageNamed:orientedLaunchImageFile];
     }
     else // not iPad
     {
