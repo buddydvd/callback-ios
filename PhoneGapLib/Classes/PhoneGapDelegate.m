@@ -289,7 +289,11 @@ static NSString *gapVersion;
     }
     else // not iPad
     {
-        orientedLaunchImageFile = @"Default";
+        if ([UIScreen mainScreen].bounds.size.height == 568.0f) {
+            orientedLaunchImageFile = @"Default-568h";
+        } else {
+            orientedLaunchImageFile = @"Default";
+        }
         launchImage = [UIImage imageNamed:[[self class] resolveImageResource:orientedLaunchImageFile]];
     }
     
