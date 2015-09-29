@@ -401,7 +401,7 @@ BOOL gSplashScreenShown = NO;
     
     
     CGRect screenBounds = [ [ UIScreen mainScreen ] bounds ];
-    [self.window setFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
 
 
     self.window.autoresizesSubviews = YES;
@@ -438,7 +438,7 @@ BOOL gSplashScreenShown = NO;
 
     self.webView.delegate = self;
 
-    [self.window addSubview:self.viewController.view];
+    [self.window setRootViewController:self.viewController];
 
     /*
      * webView
