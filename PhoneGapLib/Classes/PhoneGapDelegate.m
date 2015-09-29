@@ -401,7 +401,7 @@ BOOL gSplashScreenShown = NO;
     
     
     CGRect screenBounds = [ [ UIScreen mainScreen ] bounds ];
-    self.window = [ [ [ UIWindow alloc ] initWithFrame:screenBounds ] autorelease ];
+    [self.window setFrame:[[UIScreen mainScreen] bounds]];
 
 
     self.window.autoresizesSubviews = YES;
